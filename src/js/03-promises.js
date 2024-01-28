@@ -1,8 +1,7 @@
+import Notiflix from 'notiflix';
 const refs = {
   form: document.querySelector('form'),
 }
-
-// const amount = null;
 const eventFormFunction = (event) => {
   event.preventDefault();
 
@@ -14,43 +13,54 @@ const eventFormFunction = (event) => {
     amount: Number(target[name="amount"].value),
   };
 
-  setIntervalEvent(valuesForm)
+  setIntervalEvent(valuesForm);
 }
 
 function setIntervalEvent({step, delay, amount}) {
   setTimeout(() => {
-  let count = 0;
+  let position = 0;
 
   let timerId = setInterval(() => {
-    count += 1;
-    createPromise(count,  delay);
+    position += 1;
 
-    if (count === amount) {
+    // createPromise(count,  delay).then(result => {
+    //   console.log("RESULT", result);
+    //   console.log(`✅ Fulfilled promise ${count} in ${delay}ms`);
+    // },
+    //   error => {
+    //     console.log(error);
+    //   console.log(`❌ Rejected promise ${count} in ${delay}ms`);
+    // });
+
+      createPromise(position,  step).then((result) => {
+      console.log("RES", result);
+      Notiflix.Notify.success(`✅ Fulfilled promise ${position} in ${step}ms`);
+
+    }).catch(error => {
+      Notiflix.Notify.failure(`❌ Rejected promise ${position} in ${step}ms`);
+    })
+
+    if (position === amount) {
       clearInterval(timerId);
     }
+
   }, step);
 
   }, delay);
 }
 
-function createPromise(position, delay) {
-  console.log("position", position)
+function createPromise() {
   const shouldResolve = Math.random() > 0.45;
 
  return new Promise((resolve, reject) => {
    console.log("shouldResolve", shouldResolve)
    if (shouldResolve) {
      // Fulfill
-      resolve((resolve) => {
-        console.log(resolve)
-      })
-     // console.log("PROMISE", promise)
-
+     //  resolve(`✅ Fulfilled promise ${position} in ${step}ms`);
+      resolve();
    } else {
      // Reject
-     reject(reject => {
-       console.log(reject)
-     })
+     reject()
    }
   })
 }
