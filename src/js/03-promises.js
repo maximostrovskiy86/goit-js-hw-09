@@ -1,69 +1,61 @@
-import Notiflix from 'notiflix';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+
 const refs = {
   form: document.querySelector('form'),
 }
-const eventFormFunction = (event) => {
+const onStartFunction = (event) => {
   event.preventDefault();
 
   const target = event.target;
 
-  const valuesForm = {
+  let valuesForm = {
     step: Number(target[name="step"].value),
     delay: Number(target[name="delay"].value),
     amount: Number(target[name="amount"].value),
+    position: 0,
   };
 
-  setIntervalEvent(valuesForm);
+    setTimeout(() => {
+      setIntervalFunction(valuesForm)
+    }, valuesForm.delay)
 }
 
-function setIntervalEvent({step, delay, amount}) {
-  setTimeout(() => {
-  let position = 0;
+const setIntervalFunction = ({position, amount, step}) => {
 
   let timerId = setInterval(() => {
+
     position += 1;
-
-    // createPromise(count,  delay).then(result => {
-    //   console.log("RESULT", result);
-    //   console.log(`✅ Fulfilled promise ${count} in ${delay}ms`);
-    // },
-    //   error => {
-    //     console.log(error);
-    //   console.log(`❌ Rejected promise ${count} in ${delay}ms`);
-    // });
-
-      createPromise(position,  step).then((result) => {
-      console.log("RES", result);
-      Notiflix.Notify.success(`✅ Fulfilled promise ${position} in ${step}ms`);
-
-    }).catch(error => {
-      Notiflix.Notify.failure(`❌ Rejected promise ${position} in ${step}ms`);
-    })
+    createPromise(position, step)
+      .then(({ position, delay }) => {
+        Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
+      })
+      .catch(({ position, delay }) => {
+        Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`);
+      });
 
     if (position === amount) {
+      console.log('valuesForm.position', position, amount);
       clearInterval(timerId);
     }
 
-  }, step);
-
-  }, delay);
+  }, step)
 }
 
 function createPromise() {
-  const shouldResolve = Math.random() > 0.45;
+  return new Promise((resolve, reject) => {
+    const shouldResolve = Math.random() > 0.3;
 
- return new Promise((resolve, reject) => {
-   console.log("shouldResolve", shouldResolve)
-   if (shouldResolve) {
-     // Fulfill
-     //  resolve(`✅ Fulfilled promise ${position} in ${step}ms`);
-      resolve();
-   } else {
-     // Reject
-     reject()
-   }
+      if (shouldResolve) {
+        // Fulfill
+        console.log('createPromiseFunction++++');
+
+        resolve("Success! Value passed to resolve function");
+      } else {
+        // Reject
+        reject("Error! Error passed to reject function");
+        console.log('createPromiseFunction----');
+      }
   })
 }
 
-refs.form.addEventListener("submit", eventFormFunction);
-
+refs.form.addEventListener('submit', onStartFunction);
