@@ -1,0 +1,7 @@
+@import "../utils/placholders";
+
+.timer {
+  @extend %horizontalAlignment;
+  max-width: 350px;
+  margin-top: 20px;
+}
