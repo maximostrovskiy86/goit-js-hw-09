@@ -27,10 +27,7 @@ const options = {
   onClose(selectedDates) {
     const checkedAttrDisabled = refs.startButton.hasAttribute('disabled');
 
-    if (this.isActive) {
-      console.log('ISACTIVE');
-      return;
-    }
+    if (this.isActive) return;
 
     this.isActive = true;
 
@@ -61,7 +58,6 @@ const options = {
       console.log('deltaTime', deltaTime);
       const time = convertMs(deltaTime);
       updateClockFace(time);
-      console.log('time', time);
     }, 1000);
   },
 
