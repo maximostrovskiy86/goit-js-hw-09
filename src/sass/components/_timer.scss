@@ -1,0 +1,24 @@
+@import "../utils/placholders";
+
+.timer {
+  display: flex;
+  max-width: 350px;
+  margin-top: 20px;
+
+  .field > span {
+    display: block;
+  }
+
+  .field {
+    width: 100px;
+    text-align: center;
+  }
+
+  .value {
+    font-size: 32px;
+  }
+
+  .label {
+    font-size: 24px;
+  }
+}
